@@ -1,0 +1,5 @@
+name: MinecraftExchange
+main: org.mcexchange.MinecraftExchange
+version: 0.1
+description: An implementation of a Stock Market [Bukkit version]
+depend: [Spout]
