@@ -1,0 +1,6 @@
+name: MinecraftExchange
+main: org.mcexchange.MinecraftExchange
+version: 0.1
+description: Plugin to connect to the Minecraft Exchange server.
+depend: [Spout]
+authors: [retsrif, Pamelloes]
