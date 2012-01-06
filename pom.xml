@@ -32,6 +32,11 @@
     	<version>1.0.1-R2-SNAPSHOT</version>
     	<scope>compile</scope>
     </dependency>
+    <dependency>
+    	<groupId>commons-collections</groupId>
+    	<artifactId>commons-collections</artifactId>
+    	<version>3.2.1</version>
+    </dependency>
   </dependencies>
   <description>An implementation of a Stock Market in minecraft. This version runs with Bukkit.</description>
   <repositories>
