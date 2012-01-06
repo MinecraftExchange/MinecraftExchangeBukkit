@@ -90,7 +90,6 @@ public class ServerConnection implements Runnable {
 		} catch(NullPointerException e) {
 			System.err.println("Tried to send an unregistered packet to server!");
 		}
-		
 	}
 	
 	/**

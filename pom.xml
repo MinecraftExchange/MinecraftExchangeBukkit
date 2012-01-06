@@ -24,13 +24,13 @@
     	<groupId>org.getspout</groupId>
     	<artifactId>spoutpluginapi</artifactId>
     	<version>dev-SNAPSHOT</version>
-    	<scope>compile</scope>
+    	<scope>provided</scope>
     </dependency>
     <dependency>
     	<groupId>org.bukkit</groupId>
     	<artifactId>bukkit</artifactId>
     	<version>1.0.1-R2-SNAPSHOT</version>
-    	<scope>compile</scope>
+    	<scope>provided</scope>
     </dependency>
     <dependency>
     	<groupId>commons-collections</groupId>
@@ -39,6 +39,23 @@
     </dependency>
   </dependencies>
   <description>An implementation of a Stock Market in minecraft. This version runs with Bukkit.</description>
+  <build>
+  	<plugins>
+  		<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-shade-plugin</artifactId>
+  			<version>1.5</version>
+  			<executions>
+  				<execution>
+  					<phase>package</phase>
+  					<goals>
+  						<goal>shade</goal>
+  					</goals>
+  				</execution>
+  			</executions>
+  		</plugin>
+  	</plugins>
+  </build>
   <repositories>
 	<repository>
 	  <id>bukkit-repo</id>
