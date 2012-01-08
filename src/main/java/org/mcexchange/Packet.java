@@ -1,8 +1,8 @@
 package org.mcexchange;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
 
@@ -57,10 +57,10 @@ public abstract class Packet implements Runnable {
 	 * should be needed for each ClientConnection, so this method can be called
 	 * on an already sent packet to "reset" it to the next Packet.
 	 */
-	public abstract void read(InputStream s);
+	public abstract void read(DataInputStream s) throws IOException;
 	
 	/**
 	 * Writes the Packet to the stream.
 	 */
-	public abstract void write(OutputStream s);
+	public abstract void write(DataOutputStream s) throws IOException;
 }

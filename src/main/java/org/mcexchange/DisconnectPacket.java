@@ -1,7 +1,7 @@
 package org.mcexchange;
 
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 
 /**
  * Signifies disconnection.
@@ -14,13 +14,13 @@ public class DisconnectPacket extends Packet {
 	}
 
 	public void run() {
-		getConnection().disconnect();//Server quit.
+		Thread.currentThread().interrupt();
 	}
 
 	@Override
-	public void read(InputStream s) { }
+	public void read(DataInputStream s) { }
 
 	@Override
-	public void write(OutputStream s) { }
+	public void write(DataOutputStream s) { }
 	
 }
