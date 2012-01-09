@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MinecraftExchange extends JavaPlugin {
@@ -49,6 +52,25 @@ public class MinecraftExchange extends JavaPlugin {
 	
 	public void disable() {
 		this.setEnabled(false);
+	}
+	
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		if(sender instanceof Player) {
+			return false;
+		}
+		
+		else {
+			if(cmd.getName().equalsIgnoreCase("exchange")) {
+				if(args[0].equalsIgnoreCase("join")) {
+					JoinLeavePacket jlp = new JoinLeavePacket(sc);
+					jlp.setType(true);
+					jlp.setNetwork(args[1]);
+					sc.sendPacket(jlp);
+				}
+			}
+		}
+		
+		return false;
 	}
 
 }
