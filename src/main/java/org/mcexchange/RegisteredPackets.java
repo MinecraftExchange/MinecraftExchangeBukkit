@@ -12,7 +12,7 @@ public class RegisteredPackets {
 		disconnect = new DisconnectPacket(sc);
 		Packet.assignId((byte)-127, disconnect);
 		message = new MessagePacket(sc);
-		Packet.assignId((byte)-126, disconnect);
+		Packet.assignId((byte)-126, message);
 	}
 	
 	public DisconnectPacket getDisconnect() {
