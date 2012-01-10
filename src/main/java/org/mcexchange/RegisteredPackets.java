@@ -7,6 +7,7 @@ package org.mcexchange;
 public class RegisteredPackets {
 	private DisconnectPacket disconnect;
 	private MessagePacket message;
+	private JoinLeavePacket joinleave;
 	
 	public RegisteredPackets(ServerConnection sc) {
 		disconnect = (DisconnectPacket) Packet.getPacket((byte) -127);
@@ -19,6 +20,11 @@ public class RegisteredPackets {
 			message = new MessagePacket(sc);
 			Packet.assignId((byte)-126, message);
 		}
+		joinleave = (JoinLeavePacket) Packet.getPacket((byte) -125);
+		if(joinleave == null) {
+			joinleave = new JoinLeavePacket(sc);
+			Packet.assignId((byte)-125, joinleave);
+		}
 	}
 	
 	public DisconnectPacket getDisconnect() {
@@ -27,5 +33,9 @@ public class RegisteredPackets {
 	
 	public MessagePacket getMessage() {
 		return message;
+	}
+	
+	public JoinLeavePacket getJoinLeave() {
+		return joinleave;
 	}
 }
