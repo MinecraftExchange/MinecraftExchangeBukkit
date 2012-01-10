@@ -2,8 +2,9 @@ package org.mcexchange;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.Socket;
+import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
+import java.nio.channels.SocketChannel;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -23,8 +24,9 @@ public class MinecraftExchange extends JavaPlugin {
 		if(!f.exists()) saveDefaultConfig();
 		try{
 			//localhost just for testing purposes
-			Socket socket = new Socket(getConfig().getString("host", "localhost"), getConfig().getInt("port",62924));
-			sc = new ServerConnection(socket);
+			InetSocketAddress host = new InetSocketAddress(getConfig().getString("host", "localhost"), getConfig().getInt("port",62924));
+			SocketChannel channel = SocketChannel.open(host);
+			sc = new ServerConnection(channel);
 			sct = new Thread(sc);
 			sct.start();
 		} catch(UnknownHostException e) {

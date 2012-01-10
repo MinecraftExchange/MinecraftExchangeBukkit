@@ -1,9 +1,8 @@
 package org.mcexchange;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
 
 import org.bukkit.Bukkit;
 
@@ -13,9 +12,9 @@ import org.bukkit.Bukkit;
 public class ServerConnection implements Runnable {
 	private final RegisteredPackets rp;
 	
-	private final Socket socket;
-	private final DataInputStream in;
-	private final DataOutputStream out;
+	private final SocketChannel channel;
+	private final ByteBuffer readId = ByteBuffer.allocateDirect(1);
+	private final ByteBuffer writeId = ByteBuffer.allocateDirect(1);
 	
 	/**
 	 * Creates a new connection with the given client.
@@ -23,12 +22,10 @@ public class ServerConnection implements Runnable {
 	 * @throws IOException If there is an error opening a connection to
 	 * the client.
 	 */
-	public ServerConnection(Socket socket) throws IOException {
+	public ServerConnection(SocketChannel channel) throws IOException {
 		rp = new RegisteredPackets(this);
 		
-		this.socket = socket;
-		in = new DataInputStream(socket.getInputStream());
-		out = new DataOutputStream(socket.getOutputStream());
+		this.channel = channel;
 	}
 	
 	/**
@@ -37,17 +34,21 @@ public class ServerConnection implements Runnable {
 	 */
 	public Packet readPacket() {
 		try {
-			byte b = in.readByte();
-			Packet p = Packet.getPacket(b);
-			p.read(in);
+			readId.clear();
+			channel.read(readId);
+			readId.flip();
+			byte temp = readId.get();
+			System.out.println("Packet recieved: " + temp + "!");
+			Packet p = Packet.getPacket(temp);
+			p.read(channel);
 			return p;
 		} catch(IOException e) {
 			e.printStackTrace();
 		} catch(NullPointerException e) {
+			e.printStackTrace();
 			System.err.println("Client " + this + " received an un-registered packet!");
 			System.err.println("Disconnecting...");
-			sendPacket(rp.getDisconnect());
-			disconnect();
+			Thread.currentThread().interrupt();
 		}
 		return null;
 	}
@@ -57,19 +58,7 @@ public class ServerConnection implements Runnable {
 	 */
 	public void disconnect() {
 		try {
-			in.close();
-		} catch(IOException e) {
-			System.err.println("Unable to close input stream.");
-			e.printStackTrace();
-		}
-		try {
-			out.close();
-		} catch(IOException e) {
-			System.err.println("Unable to close output stream");
-			e.printStackTrace();
-		}
-		try {
-			socket.close();
+			channel.close();
 		} catch (IOException e) {
 			System.err.println("Unable to close connection.");
 			e.printStackTrace();
@@ -82,14 +71,18 @@ public class ServerConnection implements Runnable {
 	 */
 	public void sendPacket(Packet p) {
 		try {
-			byte id = Packet.getId(p);
-			out.writeByte(id);
-			p.write(out);
+			writeId.clear();
+			writeId.put(Packet.getId(p));
+			writeId.flip();
+			channel.write(writeId);
+			p.write(channel);
 		} catch(IOException e) {
 			e.printStackTrace();
 		} catch(NullPointerException e) {
-			System.err.println("Tried to send an unregistered packet to server!");
+			e.printStackTrace();
+			System.err.println("Tried to send an unregistered packet to Client " + this + "!");
 		}
+		
 	}
 	
 	/**

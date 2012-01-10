@@ -9,10 +9,16 @@ public class RegisteredPackets {
 	private MessagePacket message;
 	
 	public RegisteredPackets(ServerConnection sc) {
-		disconnect = new DisconnectPacket(sc);
-		Packet.assignId((byte)-127, disconnect);
-		message = new MessagePacket(sc);
-		Packet.assignId((byte)-126, message);
+		disconnect = (DisconnectPacket) Packet.getPacket((byte) -127);
+		if(disconnect == null) {
+			disconnect = new DisconnectPacket(sc);
+			Packet.assignId((byte)-127, disconnect);
+		}
+		message = (MessagePacket) Packet.getPacket((byte) -126);
+		if(message==null) {
+			message = new MessagePacket(sc);
+			Packet.assignId((byte)-126, message);
+		}
 	}
 	
 	public DisconnectPacket getDisconnect() {
