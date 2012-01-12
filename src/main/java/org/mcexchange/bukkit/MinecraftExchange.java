@@ -1,4 +1,4 @@
-package org.mcexchange;
+package org.mcexchange.bukkit;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,11 +10,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mcexchange.api.Connection;
+import org.mcexchange.api.JoinLeavePacket;
 
 public class MinecraftExchange extends JavaPlugin {
 	private static MinecraftExchange instance;
 	public static MinecraftExchange getInstance() { return instance; }
-	private ServerConnection sc;
+	private Connection sc;
 	private Thread sct;
 	
 	public void onLoad() {
@@ -29,7 +31,7 @@ public class MinecraftExchange extends JavaPlugin {
 			//localhost just for testing purposes
 			InetSocketAddress host = new InetSocketAddress(getConfig().getString("host", "localhost"), getConfig().getInt("port",62924));
 			SocketChannel channel = SocketChannel.open(host);
-			sc = new ServerConnection(channel);
+			sc = new Connection(channel);
 			sct = new Thread(sc);
 			sct.start();
 		} catch(UnknownHostException e) {

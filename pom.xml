@@ -37,6 +37,13 @@
     	<artifactId>commons-collections</artifactId>
     	<version>3.2.1</version>
     </dependency>
+    <dependency>
+    	<groupId>org.mcexchange</groupId>
+    	<artifactId>ExchangeAPI</artifactId>
+    	<version>dev-SNAPSHOT</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
   </dependencies>
   <description>An implementation of a Stock Market in minecraft. This version runs with Bukkit.</description>
   <build>
