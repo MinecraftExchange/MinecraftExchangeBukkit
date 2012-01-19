@@ -33,11 +33,6 @@
     	<scope>provided</scope>
     </dependency>
     <dependency>
-    	<groupId>commons-collections</groupId>
-    	<artifactId>commons-collections</artifactId>
-    	<version>3.2.1</version>
-    </dependency>
-    <dependency>
     	<groupId>org.mcexchange</groupId>
     	<artifactId>ExchangeAPI</artifactId>
     	<version>dev-SNAPSHOT</version>
@@ -60,6 +55,18 @@
   					</goals>
   				</execution>
   			</executions>
+  		</plugin>
+  		<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-jar-plugin</artifactId>
+  			<version>2.3.2</version>
+  			<configuration>
+  				<archive>
+  					<manifestEntries>
+  						<Premain-Class>org.mcexchange.bukkit.InstrumentHook</Premain-Class>
+  					</manifestEntries>
+  				</archive>
+  			</configuration>
   		</plugin>
   	</plugins>
   </build>
